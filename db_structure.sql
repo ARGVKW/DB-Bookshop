@@ -1,5 +1,5 @@
 CREATE TABLE book (
-    book_id integer NOT NULL PRIMARY KEY,
+    book_id SERIAL NOT NULL PRIMARY KEY,
     title character varying(255) NOT NULL,
     description text NOT NULL,
     author character varying(255) NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE book (
 );
 
 CREATE TABLE customer (
-    customer_id integer NOT NULL PRIMARY KEY,
+    customer_id SERIAL NOT NULL PRIMARY KEY,
     email character varying(255) NOT NULL UNIQUE,
     first_name character varying(100) NOT NULL,
     last_name character varying(100) NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE customer (
 );
 
 CREATE TABLE invoice (
-    invoice_id integer NOT NULL PRIMARY KEY,
+    invoice_id SERIAL NOT NULL PRIMARY KEY,
     order_id integer NOT NULL,
     store_id integer NOT NULL,
     customer_id integer NOT NULL,
@@ -36,10 +36,12 @@ CREATE TABLE invoice_item (
 	PRIMARY KEY (book_id, invoice_id)
 );
 
+CREATE TYPE order_status AS ENUM ('cart', 'unpaid', 'paid', 'processing', 'shipped', 'delivered', 'cancelled', 'returned', 'refunded');
+
 CREATE TABLE "order" (
-    order_id integer NOT NULL PRIMARY KEY,
+    order_id SERIAL NOT NULL PRIMARY KEY,
     customer_id integer NOT NULL,
-    status character varying(50) DEFAULT 'cart'::character varying NOT NULL,
+    status order_status DEFAULT 'cart'::order_status NOT NULL,
     created date DEFAULT now() NOT NULL,
     updated date
 );
@@ -52,7 +54,7 @@ CREATE TABLE order_item (
 );
 
 CREATE TABLE store (
-    store_id integer NOT NULL PRIMARY KEY,
+    store_id SERIAL NOT NULL PRIMARY KEY,
     name character varying(100) DEFAULT 'Bookshop'::character varying NOT NULL UNIQUE,
     description character varying(100),
     tax_id character varying(100) DEFAULT 0 NOT NULL,
