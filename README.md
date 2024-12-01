@@ -5,7 +5,7 @@ MVP egy online Könyvesbolt működésének szimulálására, a lehető legegysz
 
 ![image](https://github.com/user-attachments/assets/7808d40e-7537-47c8-b166-6c9f6f6b7853)
 
-Fejlesztendő területek a valós felhasználásra alkalmassá tételhez:
+Fejlesztendő területek a valós felhasználás pontosabb modellezésére:
 
 A Customer tábla helyett User tábla egy további "role" oszloppal aminek az értéke "Customer" (a role oszlop pedig enum)
 Regisztráció és login (password hash tárolása a User táblában)
