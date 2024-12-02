@@ -25,7 +25,7 @@ CREATE TABLE invoice (
     customer_id integer NOT NULL,
     total numeric(2,0) NOT NULL,
     tax numeric(2,0) NOT NULL,
-    created date DEFAULT now() NOT NULL
+    created timestamp DEFAULT now() NOT NULL
 );
 
 CREATE TABLE invoice_item (
@@ -40,10 +40,11 @@ CREATE TYPE order_status AS ENUM ('cart', 'unpaid', 'paid', 'processing', 'shipp
 
 CREATE TABLE "order" (
     order_id SERIAL NOT NULL PRIMARY KEY,
+    store_id integer NOT NULL,
     customer_id integer NOT NULL,
     status order_status DEFAULT 'cart'::order_status NOT NULL,
-    created date DEFAULT now() NOT NULL,
-    updated date
+    created timestamp DEFAULT now() NOT NULL,
+    updated timestamp
 );
 
 CREATE TABLE order_item (
