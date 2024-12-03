@@ -16,7 +16,7 @@ CREATE TABLE customer (
     city character varying(100) NOT NULL,
     address character varying(100) NOT NULL,
     phone character varying(100)
-);
+) PARTITION BY LIST (country);
 
 CREATE TABLE invoice (
     invoice_id SERIAL NOT NULL PRIMARY KEY,
