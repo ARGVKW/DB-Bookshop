@@ -3,7 +3,7 @@ CREATE TABLE book (
     title character varying(255) NOT NULL,
     description text NOT NULL,
     author character varying(255) NOT NULL,
-    price numeric(2,0) NOT NULL,
+    price money NOT NULL,
     stock integer NOT NULL DEFAULT 0 CHECK (stock >= 0)
 );
 
@@ -23,8 +23,8 @@ CREATE TABLE invoice (
     order_id integer NOT NULL,
     store_id integer NOT NULL,
     customer_id integer NOT NULL,
-    total numeric(2,0) NOT NULL,
-    tax numeric(2,0) NOT NULL,
+    total money NOT NULL,
+    tax money NOT NULL,
     created timestamp DEFAULT now() NOT NULL
 );
 
@@ -32,7 +32,7 @@ CREATE TABLE invoice_item (
     book_id integer NOT NULL REFERENCES book(book_id),
     invoice_id integer NOT NULL REFERENCES invoice(invoice_id),
     quantity integer NOT NULL,
-    invoice_price numeric(2,0) NOT NULL,
+    invoice_price money NOT NULL,
 	PRIMARY KEY (book_id, invoice_id)
 );
 

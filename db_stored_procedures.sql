@@ -60,14 +60,13 @@ BEGIN
 END;
 $$;
 
--- Számla tételes lekérdezése a vásárló és az áruház adataival
+-- Számlák tételes lekérdezése a vásárló és az áruház adataival
 SELECT invoice_id, store.name, store.tax_id, store.address, customer.first_name, customer.last_name, book.author, book.title, quantity, invoice_price, total, tax, created
   FROM invoice
   JOIN invoice_item USING (invoice_id)
   JOIN store USING (store_id)
   JOIN customer USING (customer_id)
-  JOIN book USING (book_id)
-WHERE invoice_id = new_invoice_id;
+  JOIN book USING (book_id);
 
 -- Tárolt eljárás a legtöbbet eladott könyvek lekérdezésére
 CREATE OR REPLACE PROCEDURE best_selling_books(IN start_date timestamp, IN end_date timestamp, IN cap integer, OUT book_id integer, OUT title character varying, OUT author character varying, OUT total_sold integer) AS $$
@@ -121,7 +120,7 @@ DECLARE
   total_spent numeric;
 BEGIN
   -- Legtöbbet vásároló vásárlók lekérdezése
-  CALL best_customers('2024-01-01', '2024-12-31', 5, customer_id, first_name, last_name, total_spent);
+  CALL best_customers('2021-01-01', '2024-12-31', 5, customer_id, first_name, last_name, total_spent);
   RAISE NOTICE 'Legtöbbet vásárlók: % % > $%', first_name, last_name, total_spent;
 END;
 $$;
