@@ -48,19 +48,24 @@ SELECT
     END
   END::order_status,
   now() - (random() * 1000 || ' days')::interval
-FROM generate_series(1, 50000);
+FROM generate_series(1, 100000);
 
--- Számlák megjelenítése
+-- Rendelés tételek tábla teszt adatokkal való feltöltése
 --
-SELECT invoice_id, store.name, store.tax_id, store.address, customer.first_name, customer.last_name, book.author, book.title, quantity, invoice_price, total, tax, created
-  FROM invoice
-  JOIN invoice_item USING (invoice_id)
-  JOIN store USING (store_id)
-  JOIN customer USING (customer_id)
-  JOIN book USING (book_id);
+INSERT INTO order_item(order_id, book_id, quantity)
+SELECT DISTINCT ON (order_id, book_id)
+  "order".order_id as order_id,
+  (random() * 20000)::integer + 1 as book_id,
+  (random() * 5)::integer + 1
+FROM "order"
+JOIN generate_series(1, 10)
+  ON random() < 0.5;
+
+
 
 -- Megrendelések megjelenítése
 --
+EXPLAIN ANALYSE
 SELECT order_id, 
        status, 
 	   store.name, 
