@@ -1,12 +1,34 @@
 # [WIP] DB-Bookshop
 B-GY-DBSERV
 
-* MVP egy online Könyvesbolt működésének szimulálására, a lehető legegyszerűbb adatbázis struktúrával.
+* MVP egy online Könyvesbolt működésének modellezésére, a lehető legegyszerűbb adatbázis struktúrával.
 
 ## Adatbázisterv
-![image](https://github.com/user-attachments/assets/7808d40e-7537-47c8-b166-6c9f6f6b7853)
+![image](https://github.com/user-attachments/assets/f28e251a-5f68-4d06-9f7c-a402bad55dba)
 
-### Fejlesztendő területek a valós felhasználás pontosabb modellezésére:
+### Táblák
+
+
+**Store**
+
+**Book**
+
+**Cutomer**
+
+**Order**
+
+**OrderItem**
+
+**Invoice**
+
+**InvoiceItem**
+
+
+
+### Fejlesztendő területek a valós felhasználás pontosabb modellezésére
+
+Bár a fentebb vázolt struktúra már elegendő a feladat megoldásához, de ha valós felhasználásra is alkalmassá akarnánk tenni, 
+akkor az alábbi kiegészítésekre még biztosan szükség lenne:
 
 * A Customer tábla helyett User tábla egy további "role" oszloppal aminek az értéke "Customer" (a role oszlop pedig enum)
 * Regisztráció és login (password hash tárolása a User táblában)
@@ -64,10 +86,13 @@ Néhány javaslat a teljesítmány javítására.
 
 Az adatbázisban:
 * az `order total` alias-t előállító a subquery kiváltása egy új oszloppal az `order` táblán:
-  * `total` oszlop felvétele az `order` táblára
+  * `total` oszlop felvétele az `order` táblára (terven rajta is van, csak kimaradt az implementációból)
   * trigger létrehozása, ami az `order_item` tábla update műveleteire frissíti hozzátartozó `order.total` mezőt, 
+  * (UPDATE: ezt bele is teszem még, mert ez inkább implementációs hiba javavítása, mint optimalizáció)
+
 * `order` tábla partícionálása státusz szerint 
   (Így pl. a teljesült rendelések külön táblába kerülhetnek, amiben csak akkor kell keresni, ha konkrétan ezekre az adatokra van szükség)
+
 * Normalizáció a country mezőre (külön country tábla) -> NF3 normál forma 
   (ez az atomicitáson és a tárhelyigényen javít, a teljesítményen nem igaz, viszont hasznos lehet, ha máshol is fel akarjuk használni a country adatokat)
 
