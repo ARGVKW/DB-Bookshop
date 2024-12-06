@@ -8,14 +8,15 @@ CREATE TABLE book (
 );
 
 CREATE TABLE customer (
-    customer_id SERIAL NOT NULL PRIMARY KEY,
-    email character varying(255) NOT NULL UNIQUE,
+    customer_id SERIAL,
+    email character varying(255) NOT NULL,
     first_name character varying(100) NOT NULL,
     last_name character varying(100) NOT NULL,
-    country character varying(100) NOT NULL,
     city character varying(100) NOT NULL,
     address character varying(100) NOT NULL,
-    phone character varying(100)
+    phone character varying(100),
+    country character varying(100) NOT NULL,
+    PRIMARY KEY (customer_id, country)
 ) PARTITION BY LIST (country);
 
 CREATE TABLE invoice (

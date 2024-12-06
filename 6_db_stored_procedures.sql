@@ -1,6 +1,8 @@
 -- Tárolt eljásás a számla generálására a vásárlás adatai alapján
 --
-CREATE OR REPLACE PROCEDURE generate_invoice(IN order_id integer, OUT invoice_id integer) AS $$
+CREATE OR REPLACE PROCEDURE generate_invoice(
+  IN order_id integer, 
+  OUT invoice_id integer) AS $$
 DECLARE
     invoice_id integer;
     store_id integer;
@@ -61,6 +63,7 @@ END;
 $$;
 
 -- Számlák tételes lekérdezése a vásárló és az áruház adataival
+--
 SELECT invoice_id, store.name, store.tax_id, store.address, customer.first_name, customer.last_name, book.author, book.title, quantity, invoice_price, total, tax, created
   FROM invoice
   JOIN invoice_item USING (invoice_id)
@@ -69,7 +72,15 @@ SELECT invoice_id, store.name, store.tax_id, store.address, customer.first_name,
   JOIN book USING (book_id);
 
 -- Tárolt eljárás a legtöbbet eladott könyvek lekérdezésére
-CREATE OR REPLACE PROCEDURE best_selling_books(IN start_date timestamp, IN end_date timestamp, IN cap integer, OUT book_id integer, OUT title character varying, OUT author character varying, OUT total_sold integer) AS $$
+--
+CREATE OR REPLACE PROCEDURE best_selling_books(
+  IN start_date timestamp, 
+  IN end_date timestamp, 
+  IN "limit" integer, 
+  OUT book_id integer, 
+  OUT title character varying, 
+  OUT author character varying, 
+  OUT total_sold integer) AS $$
 BEGIN
     SELECT invoice_item.book_id, book.title, book.author, SUM(quantity) AS total_sold
       INTO book_id, title, author, total_sold
@@ -79,7 +90,7 @@ BEGIN
      WHERE invoice.created BETWEEN best_selling_books.start_date AND best_selling_books.end_date
   GROUP BY invoice_item.book_id, book.title, book.author
   ORDER BY total_sold DESC
-     LIMIT best_selling_books.cap;
+     LIMIT best_selling_books."limit";
   RAISE NOTICE 'Legtöbbet eladott könyvek lekérdezése kész.';
 END;
 $$ LANGUAGE plpgsql;
@@ -93,12 +104,13 @@ DECLARE
 BEGIN
   -- Legtöbbet eladott könyvek lekérdezése
   CALL best_selling_books('2024-01-01', '2024-12-31', 5, book_id, title, author, total_sold);
-  RAISE NOTICE 'Legtöbbet eladott könyv: % - %', author, title;
+  RAISE NOTICE 'Legtöbbet eladott könyv: %.) % - % %db.', book_id, author, title, total_sold;
 END;
 $$;
 
 -- Tárolt eljárás a legtöbbet vásárlók lekérdezésére
-CREATE OR REPLACE PROCEDURE best_customers(IN start_date timestamp, IN end_date timestamp, IN limit integer, OUT customer_id integer, OUT first_name character varying, OUT last_name character varying, OUT total_spent numeric) AS $$
+--
+CREATE OR REPLACE PROCEDURE best_customers(IN start_date timestamp, IN end_date timestamp, IN "limit" integer, OUT customer_id integer, OUT first_name character varying, OUT last_name character varying, OUT total_spent numeric) AS $$
 BEGIN
     SELECT invoice.customer_id, customer.first_name, customer.last_name, SUM(total) AS total_spent
       INTO customer_id, first_name, last_name, total_spent
@@ -107,7 +119,7 @@ BEGIN
      WHERE invoice.created BETWEEN best_customers.start_date AND best_customers.end_date
   GROUP BY invoice.customer_id, customer.first_name, customer.last_name
   ORDER BY total_spent DESC
-     LIMIT best_customers.cap;
+     LIMIT best_customers."limit";
   RAISE NOTICE 'Legtöbbet vásárlók lekérdezése kész.';
 END;
 $$ LANGUAGE plpgsql;

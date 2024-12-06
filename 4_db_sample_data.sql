@@ -1,6 +1,10 @@
+-- Könyvesbolt adatainak feltöltése
+--
 INSERT INTO store (name, description, tax_id, address, phone, email, url) VALUES
 ('Bookshop', 'A bookstore with a wide selection of classic and contemporary literature.', '123456789', '123 Main St, New York, USA', 1234567890, 'email@example.com', 'http://www.example.com');
 
+-- Könyvek adatainak feltöltése
+--
 INSERT INTO book (title, author, description, price, stock) VALUES
 ('The Great Gatsby', 'F. Scott Fitzgerald', 'A novel set in the Jazz Age that tells the story of Jay Gatsby and his unrequited love for Daisy Buchanan.', 10, 0),
 ('To Kill a Mockingbird', 'Harper Lee', 'A novel about the serious issues of rape and racial inequality, told through the eyes of a young girl.', 12, 0),
@@ -76,6 +80,8 @@ INSERT INTO book (title, author, description, price, stock) VALUES
 ('A gyertyák csonkig égnek', 'Sándor Márai', 'A novel about two old friends who reunite after many years. It explores themes of friendship, betrayal, and the passage of time.', 15, 30),
 ('Eszter hagyatéka', 'Sándor Márai', 'A novel about a woman who reflects on her past and the choices she made. It is a poignant exploration of love and regret.', 14, 25);
 
+-- Vásárlók adatainak feltöltése
+--
 INSERT INTO customer (email, first_name, last_name, country, city, address, phone) VALUES
 ('john.doe@example.com', 'John', 'Doe', 'USA', 'New York', '123 Main St', '123-456-7890'),
 ('jane.smith@example.com', 'Jane', 'Smith', 'USA', 'Los Angeles', '456 Elm St', '234-567-8901'),
@@ -146,38 +152,10 @@ INSERT INTO customer (email, first_name, last_name, country, city, address, phon
 ('laszlo.kovacs@example.hu', 'László', 'Kovács', 'Hungary', 'Veszprém', 'Petőfi Sándor utca 17', '+36-88-234-5678'),
 ('zsuzsanna.nagy@example.hu', 'Zsuzsanna', 'Nagy', 'Hungary', 'Szolnok', 'Rákóczi Ferenc utca 18', '+36-56-234-5678'),
 ('istvan.toth@example.hu', 'István', 'Tóth', 'Hungary', 'Szekszárd', 'Széchenyi István utca 19', '+36-74-234-5678'),
-('maria.kiss@example.hu', 'Mária', 'Kiss', 'Hungary', 'Hódmezővásárhely', 'Deák Ferenc utca 20', '+36-62-234-5678'),
-('janos.horvath@example.hu', 'János', 'Horváth', 'Hungary', 'Nagykanizsa', 'Kossuth Lajos utca 21', '+36-93-234-5678'),
-('anna.varga@example.hu', 'Anna', 'Varga', 'Hungary', 'Dunaújváros', 'Petőfi Sándor utca 22', '+36-25-234-5678'),
-('zoltan.szabo@example.hu', 'Zoltán', 'Szabó', 'Hungary', 'Hajdúböszörmény', 'Rákóczi Ferenc utca 23', '+36-52-234-5678'),
-('klara.farkas@example.hu', 'Klára', 'Farkas', 'Hungary', 'Szigetszentmiklós', 'Széchenyi István utca 24', '+36-24-234-5678'),
-('tamas.kovacs@example.hu', 'Tamás', 'Kovács', 'Hungary', 'Budaörs', 'Deák Ferenc utca 25', '+36-23-234-5678'),
-('eva.nagy@example.hu', 'Éva', 'Nagy', 'Hungary', 'Érd', 'Kossuth Lajos utca 26', '+36-23-234-5678'),
-('gyorgy.toth@example.hu', 'György', 'Tóth', 'Hungary', 'Cegléd', 'Petőfi Sándor utca 27', '+36-53-234-5678'),
-('ildiko.kiss@example.hu', 'Ildikó', 'Kiss', 'Hungary', 'Baja', 'Rákóczi Ferenc utca 28', '+36-79-234-5678'),
-('ferenc.horvath@example.hu', 'Ferenc', 'Horváth', 'Hungary', 'Gyöngyös', 'Széchenyi István utca 29', '+36-37-234-5678'),
-('agnes.varga@example.hu', 'Ágnes', 'Varga', 'Hungary', 'Szentendre', 'Deák Ferenc utca 30', '+36-26-234-5678'),
-('peter.szabo@example.hu', 'Péter', 'Szabó', 'Hungary', 'Vác', 'Kossuth Lajos utca 31', '+36-27-234-5678'),
-('marta.farkas@example.hu', 'Márta', 'Farkas', 'Hungary', 'Gödöllő', 'Petőfi Sándor utca 32', '+36-28-234-5678'),
-('laszlo.kovacs@example.hu', 'László', 'Kovács', 'Hungary', 'Mosonmagyaróvár', 'Rákóczi Ferenc utca 33', '+36-96-234-5678'),
-('zsuzsanna.nagy@example.hu', 'Zsuzsanna', 'Nagy', 'Hungary', 'Sárvár', 'Széchenyi István utca 34', '+36-95-234-5678'),
-('istvan.toth@example.hu', 'István', 'Tóth', 'Hungary', 'Komárom', 'Deák Ferenc utca 35', '+36-34-234-5678'),
-('maria.kiss@example.hu', 'Mária', 'Kiss', 'Hungary', 'Esztergom', 'Kossuth Lajos utca 36', '+36-33-234-5678'),
-('janos.horvath@example.hu', 'János', 'Horváth', 'Hungary', 'Siófok', 'Petőfi Sándor utca 37', '+36-84-234-5678'),
-('anna.varga@example.hu', 'Anna', 'Varga', 'Hungary', 'Balassagyarmat', 'Rákóczi Ferenc utca 38', '+36-35-234-5678'),
-('zoltan.szabo@example.hu', 'Zoltán', 'Szabó', 'Hungary', 'Keszthely', 'Széchenyi István utca 39', '+36-83-234-5678'),
-('klara.farkas@example.hu', 'Klára', 'Farkas', 'Hungary', 'Tapolca', 'Deák Ferenc utca 40', '+36-87-234-5678'),
-('tamas.kovacs@example.hu', 'Tamás', 'Kovács', 'Hungary', 'Várpalota', 'Kossuth Lajos utca 41', '+36-88-234-5678'),
-('eva.nagy@example.hu', 'Éva', 'Nagy', 'Hungary', 'Ajka', 'Petőfi Sándor utca 42', '+36-88-234-5678'),
-('gyorgy.toth@example.hu', 'György', 'Tóth', 'Hungary', 'Pápa', 'Rákóczi Ferenc utca 43', '+36-89-234-5678'),
-('ildiko.kiss@example.hu', 'Ildikó', 'Kiss', 'Hungary', 'Zirc', 'Széchenyi István utca 44', '+36-88-234-5678'),
-('ferenc.horvath@example.hu', 'Ferenc', 'Horváth', 'Hungary', 'Bicske', 'Deák Ferenc utca 45', '+36-22-234-5678'),
-('agnes.varga@example.hu', 'Ágnes', 'Varga', 'Hungary', 'Dabas', 'Kossuth Lajos utca 46', '+36-29-234-5678'),
-('peter.szabo@example.hu', 'Péter', 'Szabó', 'Hungary', 'Monor', 'Petőfi Sándor utca 47', '+36-29-234-5678'),
-('marta.farkas@example.hu', 'Márta', 'Farkas', 'Hungary', 'Nagykőrös', 'Rákóczi Ferenc utca 48', '+36-53-234-5678'),
-('laszlo.kovacs@example.hu', 'László', 'Kovács', 'Hungary', 'Kiskunhalas', 'Széchenyi István utca 49', '+36-77-234-5678'),
-('zsuzsanna.nagy@example.hu', 'Zsuzsanna', 'Nagy', 'Hungary', 'Kalocsa', 'Deák Ferenc utca 50', '+36-78-234-5678');
+('maria.kiss@example.hu', 'Mária', 'Kiss', 'Hungary', 'Hódmezővásárhely', 'Deák Ferenc utca 20', '+36-62-234-5678');
 
+-- Rendelések adatainak feltöltése
+--
 INSERT INTO "order" (store_id, customer_id, status, created) VALUES
 (1, 1, 'cart', now()),
 (1, 2, 'cart', now()),
@@ -278,8 +256,10 @@ INSERT INTO "order" (store_id, customer_id, status, created) VALUES
 (1, 97, 'delivered', now()),
 (1, 98, 'paid', now()),
 (1, 99, 'delivered', now()),
-(1, 100, 'paid', now);
+(1, 100, 'paid', now());
 
+-- Rendelés tételek feltöltése
+--
 INSERT INTO order_item (order_id, book_id, quantity) VALUES
 (1, 1, 1),
 (1, 2, 1),
