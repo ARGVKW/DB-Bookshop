@@ -53,13 +53,24 @@ SELECT order_id,
 ```
 
 Az elemzés eredménye:
-![image](https://github.com/user-attachments/assets/c67acab8-6eb0-45ed-90e7-86beb665fcd9)
+![image](https://github.com/user-attachments/assets/bcd91076-d8de-45fd-9822-25968bc24cde)
+
 
 ### Optimalizálási javaslatok
 
-Látható, hogy a lekérdezés majdnem 2 másodpercig futott.
+Látható, hogy a teljes lekérdezés több mint 5 másodpercig futott.
 
-Javaslatok a teljesítmány javítására:
-* Normalizáció a country mezőre (külön country tábla)
-* Order tábla partícionálása státusz szerint (a teljesült rendelések így külön táblába kerülhetnek)
-* ...
+Néhány javaslat a teljesítmány javítására.
+
+Az adatbázisban:
+* az `order total` alias-t előállító a subquery kiváltása egy új oszloppal az `order` táblán:
+  * `total` oszlop felvétele az `order` táblára
+  * trigger létrehozása, ami az `order_item` tábla update műveleteire frissíti hozzátartozó `order.total` mezőt, 
+* `order` tábla partícionálása státusz szerint 
+  (Így pl. a teljesült rendelések külön táblába kerülhetnek, amiben csak akkor kell keresni, ha konkrétan ezekre az adatokra van szükség)
+* Normalizáció a country mezőre (külön country tábla) -> NF3 normál forma 
+  (ez az atomicitáson és a tárhelyigényen javít, a teljesítményen nem igaz, viszont hasznos lehet, ha máshol is fel akarjuk használni a country adatokat)
+
+A lekérdezésben
+* Redundancia csökkentése a JOIN utasítások minimalizálásával
+	* Átszervezni a lekérdezést hogy az ismétlődő adatok (eladó, vásárló, végösszeg) külön lekérdezésbe kerüljenek
