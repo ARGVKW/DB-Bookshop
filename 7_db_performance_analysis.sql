@@ -17,6 +17,7 @@ SELECT
   to_char(random() * 10000000000, 'FM(000) 000-0000')
 FROM generate_series(1, 10000) as num;
 
+
 -- Book tábla teszt adatokkal való feltöltése
 --
 INSERT INTO book(title, description, author, price, stock)
@@ -26,7 +27,8 @@ SELECT
   LEFT(md5(random()::text), 8),
   (round((random() * 100)::numeric, 2 )),
   (random() * 100)::integer
-FROM generate_series(1, 10000);
+FROM generate_series(1, 20000);
+
 
 -- Rendelés tábla teszt adatokkal való feltöltése
 --
@@ -50,6 +52,7 @@ SELECT
   now() - (random() * 1000 || ' days')::interval
 FROM generate_series(1, 100000);
 
+
 -- Rendelés tételek tábla teszt adatokkal való feltöltése
 --
 INSERT INTO order_item(order_id, book_id, quantity)
@@ -60,7 +63,6 @@ SELECT DISTINCT ON (order_id, book_id)
 FROM "order"
 JOIN generate_series(1, 10)
   ON random() < 0.5;
-
 
 
 -- Megrendelések megjelenítése
@@ -84,3 +86,4 @@ SELECT order_id,
   JOIN store USING (store_id)
   JOIN customer USING (customer_id)
   JOIN book USING (book_id);
+  

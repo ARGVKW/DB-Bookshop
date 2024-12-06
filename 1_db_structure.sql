@@ -24,8 +24,8 @@ CREATE TABLE invoice (
     order_id integer NOT NULL,
     store_id integer NOT NULL,
     customer_id integer NOT NULL,
-    total money NOT NULL,
-    tax money NOT NULL,
+    total money DEFAULT 0 NOT NULL,
+    tax money DEFAULT 0 NOT NULL,
     created timestamp DEFAULT now() NOT NULL
 );
 
@@ -43,6 +43,8 @@ CREATE TABLE "order" (
     order_id SERIAL NOT NULL PRIMARY KEY,
     store_id integer NOT NULL,
     customer_id integer NOT NULL,
+    total money DEFAULT 0 NOT NULL,
+    tax money DEFAULT 0 NOT NULL,
     status order_status DEFAULT 'cart'::order_status NOT NULL,
     created timestamp DEFAULT now() NOT NULL,
     updated timestamp

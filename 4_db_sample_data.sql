@@ -1,7 +1,7 @@
 -- Könyvesbolt adatainak feltöltése
 --
 INSERT INTO store (name, description, tax_id, address, phone, email, url) VALUES
-('Bookshop', 'A bookstore with a wide selection of classic and contemporary literature.', '123456789', '123 Main St, New York, USA', 1234567890, 'email@example.com', 'http://www.example.com');
+('Bookshop', 'A bookstore with a wide selection of classic and contemporary literature.', '123456789', 'Széchenyi István utca 1, Budapest, Hungary', 1234567890, 'email@example.com', 'http://www.example.com');
 
 -- Könyvek adatainak feltöltése
 --
