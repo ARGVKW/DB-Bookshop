@@ -16,25 +16,26 @@ CREATE TABLE customer (
     address character varying(100) NOT NULL,
     phone character varying(100),
     country character varying(100) NOT NULL,
-    PRIMARY KEY (customer_id, country)
+    PRIMARY KEY (customer_id, country),
+    UNIQUE (email, country)
 ) PARTITION BY LIST (country);
 
 CREATE TABLE invoice (
     invoice_id SERIAL NOT NULL PRIMARY KEY,
-    order_id integer NOT NULL,
-    store_id integer NOT NULL,
-    customer_id integer NOT NULL,
+    order_id integer NOT NULL REFERENCES "order"(order_id),
+    store_id integer NOT NULL REFERENCES store(store_id),
+    customer_id integer NOT NULL REFERENCES customer(customer_id),
     total money DEFAULT 0 NOT NULL,
     tax money DEFAULT 0 NOT NULL,
     created timestamp DEFAULT now() NOT NULL
 );
 
 CREATE TABLE invoice_item (
-    book_id integer NOT NULL REFERENCES book(book_id),
     invoice_id integer NOT NULL REFERENCES invoice(invoice_id),
+    book_id integer NOT NULL REFERENCES book(book_id),
     quantity integer NOT NULL,
     invoice_price money NOT NULL,
-	PRIMARY KEY (book_id, invoice_id)
+	PRIMARY KEY (invoice_id, book_id)
 );
 
 CREATE TYPE order_status AS ENUM ('cart', 'unpaid', 'paid', 'processing', 'shipped', 'delivered', 'cancelled', 'returned', 'refunded');
@@ -54,7 +55,7 @@ CREATE TABLE order_item (
     order_id integer NOT NULL REFERENCES "order"(order_id),
     book_id integer NOT NULL REFERENCES book(book_id),
     quantity integer NOT NULL,
-	PRIMARY KEY (order_id, book_id)
+    PRIMARY KEY (order_id, book_id)
 );
 
 CREATE TABLE store (

@@ -1,4 +1,4 @@
--- Tárolt eljásás a számla generálására a vásárlás adatai alapján
+-- Tárolt eljárás a számla generálására a vásárlás adatai alapján
 --
 CREATE OR REPLACE PROCEDURE generate_invoice(
   IN order_id integer, 

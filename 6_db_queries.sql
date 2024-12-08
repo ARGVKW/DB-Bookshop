@@ -23,14 +23,7 @@ SELECT book_id, title, author, price, stock, quantity
   JOIN customer USING (customer_id)
  WHERE customer_id = 1;
 
--- A legtöbbet vásárolt könyvek adatainak lekérdezése
-SELECT book_id, title, author, price, stock, SUM(quantity) AS sold 
-  FROM book
-  JOIN order_item USING (book_id)
- GROUP BY book_id
- ORDER BY sold DESC;
-
--- A legtöbb könyvet vásároló vásárló adatainak lekérdezése
+-- A legtöbb könyvet vásárolt vásárló adatainak lekérdezése
 SELECT customer_id, first_name, last_name, email, country, city, address, phone, SUM(quantity) AS bought 
   FROM customer 
   JOIN "order" USING (customer_id) 
