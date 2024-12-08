@@ -79,7 +79,8 @@ SELECT order_id,
 	   book.title, 
 	   quantity, 
 	   price as "unit price", 
-	   (SELECT sum(price) FROM order_item JOIN book USING (book_id) WHERE order_item.order_id = "order".order_id) as "order total",
+	   total,
+     tax,
 	   created
   FROM "order"
   JOIN order_item USING (order_id)
@@ -87,3 +88,46 @@ SELECT order_id,
   JOIN customer USING (customer_id)
   JOIN book USING (book_id);
   
+-- Rendelések tételes lekérdezése a vásárló és az áruház adataival
+--
+EXPLAIN ANALYSE
+SELECT order_id as "Rendelésazonosító",
+       store.name as "Üzlet",
+       customer.first_name||' '||customer.last_name as "Vásárló neve", 
+       customer.address||', '||customer.city||', '||customer.country as "Vásárló címe", 
+       book.author||' - '||book.title as "Könyv szerzője, címe",  
+       quantity as "Mennyiség", 
+       price as "Egységár",
+       price * quantity as "Részösszeg",
+       total as "Végösszeg",
+       tax as "ÁFA", 
+       created as "Dátum"
+  FROM "order"
+  JOIN order_item USING (order_id)
+  JOIN store USING (store_id)
+  JOIN customer USING (customer_id)
+  JOIN book USING (book_id)
+ ORDER BY order_id, author
+
+
+-- Rendelések tételes lekérdezése egy adott országra és végösszeg-tartományra szűrve
+--
+EXPLAIN ANALYSE
+SELECT order_id as "Rendelésazonosító",
+       store.name as "Üzlet",
+       customer.first_name||' '||customer.last_name as "Vásárló neve", 
+       customer.address||', '||customer.city||', '||customer.country as "Vásárló címe", 
+       book.author||' - '||book.title as "Könyv szerzője, címe",  
+       quantity as "Mennyiség", 
+       price as "Egységár",
+       price * quantity as "Részösszeg",
+       total as "Végösszeg",
+       tax as "ÁFA", 
+       created as "Dátum"
+  FROM "order"
+  JOIN order_item USING (order_id)
+  JOIN store USING (store_id)
+  JOIN customer USING (customer_id)
+  JOIN book USING (book_id)
+ WHERE country = 'Japan' AND total > money(1000.00)
+ ORDER BY order_id, author
