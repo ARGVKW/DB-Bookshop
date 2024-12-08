@@ -23,6 +23,7 @@ CREATE TRIGGER decrement_stock_on_payment AFTER UPDATE ON "order"
     FOR EACH ROW
     EXECUTE FUNCTION decrement_stock_on_payment();
 
+
 -- Függvény a rendelés végösszegének és adótartalmának kiszámítására
 --
 CREATE TYPE order_total AS (total money, tax money);
@@ -60,3 +61,23 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER update_order_total AFTER INSERT OR UPDATE OR DELETE ON order_item
     FOR EACH ROW
     EXECUTE FUNCTION update_order_total();
+
+
+-- Trigger a tárolt eljárás hívására a számla generálásához
+--
+CREATE OR REPLACE FUNCTION call_generate_invoice() RETURNS TRIGGER AS $$
+DECLARE
+  invoice_id integer;
+BEGIN
+    CALL generate_invoice(NEW.order_id, invoice_id);
+    RAISE NOTICE 'Számlagenerálás kész. Számla sorszáma: %', invoice_id;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger a számla generálására a rendelés kifizetésekor
+--
+CREATE TRIGGER generate_invoice AFTER INSERT OR UPDATE ON "order"
+    FOR EACH ROW
+    WHEN (NEW.status = 'paid')
+    EXECUTE FUNCTION call_generate_invoice();

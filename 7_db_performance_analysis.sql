@@ -65,30 +65,7 @@ JOIN generate_series(1, 10)
   ON random() < 0.5;
 
 
--- Megrendelések megjelenítése
---
-EXPLAIN ANALYSE
-SELECT order_id, 
-       status, 
-	   store.name, 
-	   store.tax_id, 
-	   store.address, 
-	   customer.first_name, 
-	   customer.last_name, 
-	   book.author, 
-	   book.title, 
-	   quantity, 
-	   price as "unit price", 
-	   total,
-     tax,
-	   created
-  FROM "order"
-  JOIN order_item USING (order_id)
-  JOIN store USING (store_id)
-  JOIN customer USING (customer_id)
-  JOIN book USING (book_id);
-  
--- Rendelések tételes lekérdezése a vásárló és az áruház adataival
+-- Megrendelések tételes lekérdezése a vásárló és az áruház adataival
 --
 EXPLAIN ANALYSE
 SELECT order_id as "Rendelésazonosító",
@@ -107,10 +84,10 @@ SELECT order_id as "Rendelésazonosító",
   JOIN store USING (store_id)
   JOIN customer USING (customer_id)
   JOIN book USING (book_id)
- ORDER BY order_id, author
+ ORDER BY order_id, author;
 
 
--- Rendelések tételes lekérdezése egy adott országra és végösszeg-tartományra szűrve
+-- Megrendelések tételes lekérdezése egy adott országra és végösszeg-tartományra szűrve
 --
 EXPLAIN ANALYSE
 SELECT order_id as "Rendelésazonosító",
@@ -130,4 +107,4 @@ SELECT order_id as "Rendelésazonosító",
   JOIN customer USING (customer_id)
   JOIN book USING (book_id)
  WHERE country = 'Japan' AND total > money(1000.00)
- ORDER BY order_id, author
+ ORDER BY order_id, author;

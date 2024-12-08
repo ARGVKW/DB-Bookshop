@@ -41,39 +41,6 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-
-DO $$
-DECLARE
-  invoice_id integer;
-BEGIN
-  -- Számla generálása az adott megrendelés alapján
-  CALL generate_invoice(1, invoice_id);
-  RAISE NOTICE 'Számlagenerálás kész. Számla sorszáma: %', invoice_id;
-
-END;
-$$;
-
--- Számlák tételes lekérdezése a vásárló és az áruház adataival
---
-SELECT invoice_id as "Számla sorszáma", 
-       store.name as "Üzlet", 
-       store.tax_id as "Üzlet adószáma", 
-       store.address as "Üzlet címe", 
-       customer.first_name||' '||customer.last_name as "Vásárló neve", 
-       customer.address||', '||customer.city||', '||customer.country as "Vásárló címe", 
-       book.author||' - '||book.title as "Könyv szerzője, címe",  
-       quantity as "Mennyiség", 
-       invoice_price as "Egységár",
-       price * quantity as "Részösszeg", 
-       total as "Végösszeg", 
-       tax as "ÁFA", 
-       created as "Dátum"
-  FROM invoice
-  JOIN invoice_item USING (invoice_id)
-  JOIN store USING (store_id)
-  JOIN customer USING (customer_id)
-  JOIN book USING (book_id);
-
 -- Tárolt eljárás a legtöbbet eladott könyvek lekérdezésére
 --
 CREATE OR REPLACE PROCEDURE best_selling_books(
@@ -98,6 +65,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Teszt
 DO $$
 DECLARE
   book_id integer;
@@ -127,6 +95,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Teszt
 DO $$
 DECLARE
   customer_id integer;
