@@ -11,23 +11,14 @@ DECLARE
     quantity integer;
     i_book_id integer;
     i_quantity integer;
-    invoice_price numeric(2,0);
-    grand_total numeric(2,0);
-    tax numeric(2,0);
-    afa numeric := 0.27;
+    invoice_price money;
+    grand_total money;
+    tax money;
 BEGIN
-    SELECT "order".store_id, "order".customer_id
-      INTO store_id, customer_id
+    SELECT "order".store_id, "order".customer_id, "order".total, "order".tax
+      INTO store_id, customer_id, grand_total, tax
       FROM "order"
      WHERE "order".order_id = generate_invoice.order_id;
-    
-    SELECT SUM(book.price * order_item.quantity)
-      INTO grand_total
-      FROM order_item
-      JOIN book USING (book_id)
-     WHERE order_item.order_id = generate_invoice.order_id;
-
-    tax := grand_total * afa;
     
     INSERT INTO invoice (order_id, store_id, customer_id, total, tax)
     VALUES (generate_invoice.order_id, store_id, customer_id, grand_total, tax)
@@ -53,18 +44,30 @@ $$ LANGUAGE plpgsql;
 
 DO $$
 DECLARE
-  new_invoice_id integer;
+  invoice_id integer;
 BEGIN
   -- Számla generálása az adott megrendelés alapján
-  CALL generate_invoice(1, new_invoice_id);
-  RAISE NOTICE 'Számlagenerálás kész. Számla sorszáma: %', new_invoice_id;
+  CALL generate_invoice(1, invoice_id);
+  RAISE NOTICE 'Számlagenerálás kész. Számla sorszáma: %', invoice_id;
 
 END;
 $$;
 
 -- Számlák tételes lekérdezése a vásárló és az áruház adataival
 --
-SELECT invoice_id, store.name, store.tax_id, store.address, customer.first_name, customer.last_name, book.author, book.title, quantity, invoice_price, total, tax, created
+SELECT invoice_id as "Számla sorszáma", 
+       store.name as "Üzlet", 
+       store.tax_id as "Üzlet adószáma", 
+       store.address as "Üzlet címe", 
+       customer.first_name||' '||customer.last_name as "Vásárló neve", 
+       customer.address||', '||customer.city||', '||customer.country as "Vásárló címe", 
+       book.author||' - '||book.title as "Könyv szerzője, címe",  
+       quantity as "Mennyiség", 
+       invoice_price as "Egységár",
+       price * quantity as "Részösszeg", 
+       total as "Végösszeg", 
+       tax as "ÁFA", 
+       created as "Dátum"
   FROM invoice
   JOIN invoice_item USING (invoice_id)
   JOIN store USING (store_id)
