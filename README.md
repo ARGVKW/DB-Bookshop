@@ -57,7 +57,8 @@ GitHub ▶ https://github.com/ARGVKW/DB-Bookshop
 * MVP egy online Könyvesbolt működésének modellezésére, a lehető legegyszerűbb adatbázis struktúrával.
 
 ## 2. Adatbázisterv
-![image](https://github.com/user-attachments/assets/dc95e8d7-ceb7-49f3-9f3b-2bf2f9c904db)
+![image](https://github.com/user-attachments/assets/212a4bee-f5fc-47ce-84b1-fb0a26c824d6)
+
 
 ### 2.1. Táblák
 
